@@ -3,7 +3,7 @@
 This is a collection of Plaster templates. In other words a plethora of Plaster templates. For your convenience and ease of use. I started this project as I was in need of a good way to share Plaster templates. Looking at the issue discussion in the Plaster project (e.g. https://github.com/PowerShell/Plaster/issues/224 or https://github.com/PowerShell/Plaster/issues/213 and there are more) I also thought that this is a general need of the PowerShell community. So here we are.
 
 __Plaster__:
-Plaster is a scaffolding engine for PowerShell related projects. Like [yeoman][<http://yeoman.io/>] is for WebApps. It helps you define, via a manifest file, the structure, the included tools and so forth. Of a module to be generated with Plaster. This makes it easy to generated e.g. a new PowerShell module when you are in need of that. At the same time you don't "forget" to include logging or a specific structure of a project. You thereby indirectly free brain capacity to think about the real work at hand instead of navigating the standard details of creating 'x' coding project.
+Plaster is a scaffolding engine for PowerShell related projects. Like [yeoman](http://yeoman.io/) is for WebApps. It helps you define, via a manifest file, the structure, the included tools and so forth. Of a module to be generated with Plaster. This makes it easy to generated e.g. a new PowerShell module when you are in need of that. At the same time you don't "forget" to include logging or a specific structure of a project. You thereby indirectly free brain capacity to think about the real work at hand instead of navigating the standard details of creating 'x' coding project.
 
 __Hopes__:
 I hope to kickstart a way to share Plaster templates in the PowerShell community. Doing it here on GitHub might certainly not be the perfect way. But, it is a start. I hope that as time goes by. More people will join the project. Add templates. And that we together can find a good way of sharing Plaster templates.
@@ -13,7 +13,7 @@ I hope to kickstart a way to share Plaster templates in the PowerShell community
 1. Make sure that you have installed Plaster.
         2. If you haven't it can be done by `Install-Module -Name Plaster` (which will download the module from the PSGallery).
 2. Look at the code of the template that you wish to use. In order to feel safe about the code. This is always a good idea!
-3. Download the latest release from the [releases][<https://github.com/larssb/PlasterPlethora/releases>] tab.
+3. Download the latest release from the [releases](https://github.com/larssb/PlasterPlethora/releases>) tab.
 4. Extract the release to your favorite folder for containing Plaster templates.
 5. Use either:
         5. The Invoke-Plaster cmdlet by pointing it to the `content` folder of the template you wish to use. This will execute Plaster on the template manifest inside the `content` folder and generate a project based on the input you give to the template.
@@ -22,7 +22,7 @@ I hope to kickstart a way to share Plaster templates in the PowerShell community
 
 ## Templates included
 
-Please see this projects [wiki][<https://github.com/larssb/PlasterPlethora/wiki>] page for an overview and details on the included templates.
+Please see this projects [wiki](https://github.com/larssb/PlasterPlethora/wiki) page for an overview and details on the included templates.
 
 ## The structure of the templates
 
