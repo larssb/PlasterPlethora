@@ -20,6 +20,10 @@ I hope to kickstart a way to share Plaster templates in the PowerShell community
         5. The Get-PlasterTemplate cmdlet to lightly inspect the templates in the folder to which you extracted the templates. `...this cmdlet will provide details about each individual template that was retrieved....`
                 5. Then use Invoke-Plaster to genereate a project.
 
+## Templates included
+
+Please see this projects [wiki][<https://github.com/larssb/PlasterPlethora/wiki>] page for an overview and details on the included templates.
+
 ## The structure of the templates
 
 ### Naming
