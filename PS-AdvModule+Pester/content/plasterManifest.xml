@@ -1,0 +1,104 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<plasterManifest
+  schemaVersion="1.0" xmlns="http://www.microsoft.com/schemas/PowerShell/Plaster/v1">
+  <metadata>
+    <name>powerShellAdvMod_pester</name>
+    <id>b903bf08-397c-42fe-b766-e885ced9c719</id>
+    <version>0.0.1</version>
+    <title>PowerShell Adv. Module with Pester</title>
+    <description>Scaffolds a PowerShell project utilizing advanced functions and a folder structure
+    remsembling what should be encapsulated. Furthermore, readies the PowerShell project for Pester tests.</description>
+    <author>Lars Bengtsson | https://github.com/larssb</author>
+    <tags>pester, advanced functions, powershell project, powershell module</tags>
+  </metadata>
+  <parameters>
+    <!-- Module info -->
+    <parameter name="ModuleName" type="text" prompt="State the name of your module" />
+    <parameter name="ModuleDesc" type="text" prompt="Give a brief description of the module" />
+    <parameter name="ModuleVersion" type="text" prompt="Version number" default='0.0.1' />
+    <parameter name="ModuleAuthor" type="user-fullname" store="text" prompt="Author"/>
+    <parameter name="ModuleAuthorEmail" type="user-email" store="text" prompt="Author e-mail"/>
+    <!-- 3rd party tools -->
+    <parameter name='Options' type='multichoice' prompt='Select one or more of the following tooling options:' default='1,2,3,4' store='text' >
+        <choice label='&amp;None' help="No tooling options specified." value="None"/>
+        <choice label='Add &amp;Invoke-Build as your build-tool.' help="Adds Invoke-Build scripts. Used as the build engine to run tests, packaging and more." value="Invoke-Build"/>
+        <choice label='Add &amp;Pester test support.' help="Add Pester to enable testing your code." value="Pester"/>
+        <choice label='Add plat&amp;yPS help generation support.' help="Adds help build support using platyPS." value="platyPS"/>
+        <choice label='Add &amp;logging to have Log4Net enabled.' help="Bootstraps Log4Net to be used as the logging facilitator in the scaffolded PowerShell module structure." value="Logging"/>
+    </parameter>
+    <!-- Ask if VS Code is used | if yes we can use the PSScriptAnalyzer settings -->
+    <parameter name='VSCode' type='choice' prompt='Will you be using VS Code as your code editor (IDE)?' default='0' store='text' >
+        <choice label='&amp;Yes' help="VS Code is your IDE." value="Yes"/>
+        <choice label='&amp;No' help="VS Code is not your IDE." value="No"/>
+    </parameter>
+    <!-- Folder structure -->
+    <parameter name="Folders" type="multichoice" prompt="Please select folders to include" default='0,1'>
+      <choice label="&amp;Public" help="Adds a public folder to module root" value="Public" />
+      <choice label="&amp;R (pRivate)" help="Adds a private folder to module root" value="Private" />
+      <choice label="&amp;Classes" help="Adds a classes folder to module root" value="Classes" />
+      <choice label="&amp;Binaries" help="Adds a binaries folder to module root" value="Binaries" />
+      <choice label="&amp;Data" help="Adds a data folder to module root" value="Data" />
+    </parameter>
+  </parameters>
+  <content>
+    <!-- Here we go message -->
+    <message>&#10;&#10;Scaffolding your project...&#10;&#10;&#10;</message>
+    <!-- Create a PowerShell manifest file for the project -->
+    <newModuleManifest destination="$(${PLASTER_PARAM_ModuleName} -replace ' ').psd1" 
+        moduleVersion='$PLASTER_PARAM_ModuleVersion' 
+        rootModule="$(${PLASTER_PARAM_ModuleName} -replace ' ')"
+        author='$PLASTER_PARAM_ModuleAuthor | $PLASTER_PARAM_ModuleAuthorEmail'
+        description='$PLASTER_PARAM_ModuleDesc'/>
+    <file condition='$PLASTER_PARAM_Options -notcontains "Logging"' destination="$(${PLASTER_PARAM_ModuleName} -replace ' ').psm1" source='template.psm1' />
+    <templateFile condition='$PLASTER_PARAM_Options -contains "Logging"' destination="$(${PLASTER_PARAM_ModuleName} -replace ' ').psm1" source='template_withLogging.psm1' />
+    <!-- General ReadMe file -->
+    <templateFile condition='$PLASTER_PARAM_Options -contains "platyPS"' destination="ReadMe.md" source='docs\ReadMe.md' />
+    <templateFile condition='$PLASTER_PARAM_Options -notcontains "platyPS"' destination="ReadMe.txt" source='docs\ReadMe.txt' />
+    <!-- Create folders relative to the users selections (the folders defined under <parameters> -->
+    <message>Creating your folders for module: $PLASTER_PARAM_ModuleName.</message>
+    <file condition='$PLASTER_PARAM_Folders -contains "Public"' destination='Public\' source='' />
+    <templateFile condition='$PLASTER_PARAM_Folders -contains "Public"' destination='Public\ReadMe.md' source='dummyFiles\publicFolder_ReadMe.md' />
+    <file condition='$PLASTER_PARAM_Folders -contains "Private"' destination='Private\' source='' />
+    <templateFile condition='$PLASTER_PARAM_Folders -contains "Private"' destination='Private\ReadMe.md' source='dummyFiles\privateFolder_ReadMe.md' />
+    <file condition='$PLASTER_PARAM_Folders -contains "Classes"' destination='Classes\' source='' />
+    <file condition='$PLASTER_PARAM_Folders -contains "Binaries"' destination='Binaries\' source='' />
+    <file condition='$PLASTER_PARAM_Folders -contains "Data"' destination='Data\' source='' />
+    <file destination='Artefacts\' source='' />
+    <templateFile destination='Artefacts\ReadMe.md' source='dummyFiles\artefactsFolder_ReadMe.md' />
+    <file condition='$PLASTER_PARAM_Options -contains "Logging"' destination='Artefacts\Logging\Config' source='' />
+    <!-- Run over the Options parameter and setup accordingly -->
+      <!-- Invoke-Build -->
+    <message condition='$PLASTER_PARAM_Options -contains "Invoke-Build"'>Setting up Invoke-Build the build engine.</message>
+    <file condition='$PLASTER_PARAM_Options -contains "Invoke-Build"' destination='Build\' source='InvokeBuild\GeneralFiles\*.Build.ps1' />
+    <file condition='$PLASTER_PARAM_Options -contains "Invoke-Build"' destination="Build\$(${PLASTER_PARAM_ModuleName} -replace ' ').Build.ps1" source='InvokeBuild\main.Build.ps1' />
+    <requireModule name="InvokeBuild" condition='$PLASTER_PARAM_Options -contains "Invoke-Build"' message="Without Invoke-Build, you will not be able to run build scripts. Fix = install-module -name InvokeBuild."/>
+    <message condition="$PLASTER_PARAM_Options -contains 'Invoke-Build' -and $PLASTER_PARAM_VSCode -eq 'Yes'">You can use the script New-VSCodeTask to geneate a tasks.json file for easily invoking build tasks in VS Code. Get it via the PSGallery.</message>
+      <!-- Pester -->
+    <message condition='$PLASTER_PARAM_Options -contains "Pester"'>Setting up Pester the test engine.</message>
+    <file condition='$PLASTER_PARAM_Options -contains "Pester"' destination='Tests\' source='Pester_Tests\*.pester.*' />
+    <requireModule name="Pester" condition='$PLASTER_PARAM_Options -contains "Pester"' message="Without Pester, you will not be able to run tests on your code. Fix = install-module -name Pester."/>
+      <!-- VS Code config -->
+    <message condition="$PLASTER_PARAM_VSCode -eq 'Yes'">Configuring VS Code to your liking.</message>
+    <message condition="$PLASTER_PARAM_VSCode -eq 'YES'">Snippets in VS Code at the workspace level requires the `"Project Snippets`" extension. Make sure to install the recommended extensions, as prompted.</message>
+    <file condition='$PLASTER_PARAM_VSCode -eq "Yes"' destination='PSScriptAnalyzer\ScriptAnalyzerSettings.psd1' source='PSScriptAnalyzer\ScriptAnalyzerSettings.psd1' />
+    <file condition='$PLASTER_PARAM_VSCode -eq "Yes"' destination='.vscode\settings.json' source='editor\VSCode\settings.json' />
+    <file condition='$PLASTER_PARAM_VSCode -eq "Yes"' destination='.vscode\snippets\powershell.json' source='editor\VSCode\snippets\powershell.json' />
+    <file condition='$PLASTER_PARAM_VSCode -eq "Yes"' destination='.vscode\extensions.json' source='editor\VSCode\extensions\extensions.json' />
+    <requireModule name="PSScriptAnalyzer" condition='$PLASTER_PARAM_Options -contains "PSScriptAnalyzer"' message="Without PSScriptAnalyzer, you will not be able to have your code properly quality analyzed. Fix = install-module -name PSScriptAnalyzer."/>
+      <!-- Documentation (platyPS or not) -->
+    <message condition='$PLASTER_PARAM_Options -contains "platyPS"'>Preparing documentation files based on your choices.</message>
+    <templateFile condition='$PLASTER_PARAM_Options -contains "platyPS"' destination="docs\en-US\about_$(${PLASTER_PARAM_ModuleName} -replace ' ').help.md" source='docs\en-US\about_Module.help.md' />
+    <templateFile condition='$PLASTER_PARAM_Options -notcontains "platyPS"' destination="docs\en-US\about_$(${PLASTER_PARAM_ModuleName} -replace ' ').help.txt" source='docs\en-US\about_Module.help.txt' />
+    <requireModule name="platyPS" condition='$PLASTER_PARAM_Options -contains "platyPS"' message="Without platyPS, you will not be able to easily generate documentation for your project. Fix = install-module -name platyPS."/>
+      <!-- Git -->
+    <message>Preparing Git as the SCM for your project (Of course you will be using Git, so it is not possible to exclude it).</message>
+    <file destination='.git\hooks\pre-commit' source='git_SCM\git_pre-commit' />
+    <file condition='$PLASTER_PARAM_Options -notcontains "Logging"' destination='.gitignore' source='git_SCM\_gitignore' />
+    <file condition='$PLASTER_PARAM_Options -contains "Logging"' destination='.gitignore' source='git_SCM\_gitignore_Logging' />
+      <!-- Logging -->
+    <message condition='$PLASTER_PARAM_Options -contains "Logging"'>Bootstrapping Log4Net logging to be enabled in the scaffolded PowerShell module.</message>
+    <file condition='$PLASTER_PARAM_Options -contains "Logging"' destination='Artefacts\Logging\Config\Log4Net.Config.xml' source='logging\Log4Net.Config.xml' />
+    <requireModule name="powerShellTooling" condition='$PLASTER_PARAM_Options -contains "Logging"' message="Without the powerShellTooling PowerShell module, you will not be able to easily generate documentation for your project. Fix = `install-module -name powerShellTooling`. A propietary module developed by Lars Bengtsson.
+    Get it on the self-hosted Package Management system you are using."/>
+  </content>
+</plasterManifest>

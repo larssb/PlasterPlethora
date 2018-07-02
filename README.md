@@ -1,2 +1,3 @@
 # PlasterPlethora
-A plethora of Plaster templates. The scaffolding engine for PowerShell related projects.
+
+A plethora of Plaster templates. Plaster is a scaffolding engine for PowerShell related projects.

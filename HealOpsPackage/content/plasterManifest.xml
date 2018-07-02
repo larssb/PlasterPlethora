@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<plasterManifest
+  schemaVersion="1.0" xmlns="http://www.microsoft.com/schemas/PowerShell/Plaster/v1">
+  <metadata>
+    <name>HealOpsPackage</name>
+    <id>f94a4744-65a4-4647-85be-b99fab48aa49</id>
+    <version>0.0.1</version>
+    <title>HealOps Package</title>
+    <description>Scaffolds a HealOps package. With the folder structure and anything needed to quickly get going when programming *.Tests.ps1 and *.Repairs.ps1 files and the
+    other related content required to build a HealOps package.</description>
+    <author>labe</author>
+    <tags>HealOps, HealOps package, monitoring, healing, self-healing</tags>
+  </metadata>
+  <parameters>
+    <!-- HealOps package info -->
+    <parameter name="HealOpsPackageName" type="text" prompt="What should be the name of this HealOps package? [Format == 'SERVICE.HealOpsPackage']" />
+    <parameter name="ModuleAuthor" type="user-fullname" store="text" prompt="Author"/>
+    <parameter name="ModuleDesc" type="text" prompt="Give a brief description of the HealOps package. What does it test/monitor and/or repair?" />
+  </parameters>
+  <content>
+    <!-- Here we go message -->
+    <message>&#10;&#10;Scaffolding your project...&#10;&#10;&#10;</message>
+    <!-- Inform that folers is being generated -->
+    <message>Creating folders for the HealOps package: $PLASTER_PARAM_HealOpsPackageName.</message>
+    <file destination="Config\" source='' />
+    <file destination="TestsAndRepairs\" source='' />
+    <!-- Copy files to intended destinations -->
+    <message>Copying files for the HealOps package: $PLASTER_PARAM_HealOpsPackageName.</message>    
+    <file
+      source="docs\ReadMe.md"
+      destination="${PLASTER_PARAM_HealOpsPackageName}.HealOpsPackage.ReadMe.md" />
+    <file
+      source="HealOpsPackageConfig\HealOpsPackageConfig.json"
+      destination="Config\${PLASTER_PARAM_HealOpsPackageName}.HealOpsPackage.json" />
+    <file
+      source="TestsAndRepairs_Templates\Tests.ps1"
+      destination="TestsAndRepairs\RenameThis.Tests.ps1" />
+    <file
+      source="TestsAndRepairs_Templates\Repairs.ps1"
+      destination="TestsAndRepairs\RenameThis.Repairs.ps1" />
+    <!-- Create a PowerShell module manifest -->
+    <newModuleManifest
+      destination='$PLASTER_PARAM_HealOpsPackageName.HealOpsPackage.psd1'
+      moduleVersion='$PLASTER_PARAM_Version'
+      author='$PLASTER_PARAM_ModuleAuthor'
+      description='$PLASTER_PARAM_ModuleDesc'
+    />
+  </content>
+</plasterManifest>
