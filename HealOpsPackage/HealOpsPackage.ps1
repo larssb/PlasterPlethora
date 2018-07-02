@@ -19,7 +19,7 @@ $manifestProperties = @{
     Path = "$PSScriptRoot/content/plasterManifest.xml"
     Tags = 'HealOps','HealOps package','monitoring','healing','self-healing'
     TemplateName = 'HealOpsPackage'
-    TemplateVersion = '0.0.1'
+    TemplateVersion = '1.0.0'
     Title = "HealOps Package"
 }
 
