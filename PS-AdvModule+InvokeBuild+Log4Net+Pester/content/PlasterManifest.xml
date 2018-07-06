@@ -4,7 +4,7 @@
   <metadata>
     <name>powerShellAdvMod_pester</name>
     <id>b903bf08-397c-42fe-b766-e885ced9c719</id>
-    <version>0.0.1</version>
+    <version>1.0.0</version>
     <title>PowerShell Adv. Module with Pester</title>
     <description>Scaffolds a PowerShell project utilizing advanced functions and a folder structure
     remsembling what should be encapsulated. Furthermore, readies the PowerShell project for Pester tests.</description>

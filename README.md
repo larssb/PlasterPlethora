@@ -11,14 +11,14 @@ I hope to kickstart a way to share Plaster templates in the PowerShell community
 ## Getting started with the templates
 
 1. Make sure that you have installed Plaster.
-        2. If you haven't it can be done by `Install-Module -Name Plaster` (which will download the module from the PSGallery).
+    1. If you haven't it can be done by `Install-Module -Name Plaster` (which will download the module from the PSGallery).
 2. Look at the code of the template that you wish to use. In order to feel safe about the code. This is always a good idea!
 3. Download the latest release from the [releases](https://github.com/larssb/PlasterPlethora/releases>) tab.
 4. Extract the release to your favorite folder for containing Plaster templates.
 5. Use either:
-        5. The Invoke-Plaster cmdlet by pointing it to the `content` folder of the template you wish to use. This will execute Plaster on the template manifest inside the `content` folder and generate a project based on the input you give to the template.
-        5. The Get-PlasterTemplate cmdlet to lightly inspect the templates in the folder to which you extracted the templates. `...this cmdlet will provide details about each individual template that was retrieved....`
-                5. Then use Invoke-Plaster to genereate a project.
+    5. The Invoke-Plaster cmdlet by pointing it to the `content` folder of the template you wish to use. This will execute Plaster on the template manifest inside the `content` folder and generate a project based on the input you give to the template. Here is an example: `Invoke-Plaster -TemplatePath .\PS-AdvModule+InvokeBuild+Log4Net+Pester\content -DestinationPath ..\testing`
+    5. The Get-PlasterTemplate cmdlet to lightly inspect the templates in the folder to which you extracted the templates. `...this cmdlet will provide details about each individual template that was retrieved....`
+        5. Then use Invoke-Plaster to genereate a project.
 
 ## Templates included
 
