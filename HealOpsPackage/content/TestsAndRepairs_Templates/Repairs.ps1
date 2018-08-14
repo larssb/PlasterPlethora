@@ -1,8 +1,8 @@
 # Define parameters
-[CmdletBinding()]
+[CmdletBinding(DefaultParameterSetName="Default")]
 [OutputType([Boolean])]
 param(
-    [Parameter(Mandatory, ParameterSetName="Default")]
+    [Parameter(Mandatory, HelpMessage="Data from the result of testing the state of an IT Service/Entity.")]
     [ValidateNotNullOrEmpty()]
     $TestData
 )
