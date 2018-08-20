@@ -1,0 +1,77 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<plasterManifest
+  schemaVersion="1.0" xmlns="http://www.microsoft.com/schemas/PowerShell/Plaster/v1">
+  <metadata>
+    <name>dscCustomResource</name>
+    <id>d5d84c44-c7d9-43e4-ae98-32367286c71b</id>
+    <version>0.0.1</version>
+    <title>DSC Custom resource Plaster template.</title>
+    <description>Scaffolds a DSC custom resource project. Making it easy to get started writting DSC custom resources.</description>
+    <author>Lars Bengtsson | https://github.com/larssb</author>
+    <tags>pester, dsc, resource, custom, powershell</tags>
+  </metadata>
+  <parameters>
+    <!-- Module info -->
+    <parameter name="ModuleName" type="text" prompt="State the name of your DSC resource" />
+    <parameter name="ModuleDesc" type="text" prompt="Give a brief description of the DSC resource" />
+    <parameter name="ModuleVersion" type="text" prompt="Version number" default='0.0.0.1' />
+    <parameter name="ModuleAuthor" type="user-fullname" store="text" prompt="Author"/>
+    <parameter name="ModuleAuthorEmail" type="user-email" store="text" prompt="Author e-mail"/>
+    <!-- 3rd party tools -->
+    <parameter name='Options' type='multichoice' prompt='Select one or more of the following tooling options:' default='1,2,3' store='text' >
+        <choice label='&amp;None' help="No tooling options specified." value="None"/>
+        <choice label='Add I&amp;nvoke-Build' help="Adds Invoke-Build scripts. Used as the build engine to run tests, packaging and more." value="Invoke-Build"/>
+        <choice label='Add &amp;Pester test support' help="Add Pester to enable testing your code." value="Pester"/>
+        <choice label='Add plat&amp;yPS help generation support' help="Adds help build support using platyPS." value="platyPS"/>
+    </parameter>
+    <!-- Ask if VS Code is used | if yes we can use the PSScriptAnalyzer settings -->
+    <parameter name='VSCode' type='choice' prompt='Will you be using VS Code as your code editor (IDE)?' default='0' store='text' >
+        <choice label='&amp;Yes' help="VS Code is your IDE." value="Yes"/>
+        <choice label='&amp;No' help="VS Code is not your IDE." value="No"/>
+    </parameter>
+  </parameters>
+  <content>
+    <!-- Here we go message -->
+    <message>&#10;&#10;Scaffolding your DSC resource project.&#10;&#10;&#10;</message>
+    <!-- Create the folders the user selected when prompted (the folders defined under <parameters> -->
+    <message>Creating your folders for module: $PLASTER_PARAM_ModuleName.</message>
+    <file destination='$PLASTER_PARAM_ModuleName\' source='' />
+    <!-- Create PowerShell DSC resource base files -->
+    <newModuleManifest destination='$PLASTER_PARAM_ModuleName.psd1'
+        rootModule='$PLASTER_PARAM_ModuleName.psm1'
+        DscResourcesToExport='$PLASTER_PARAM_ModuleName'
+        moduleVersion='$PLASTER_PARAM_ModuleVersion'
+        author='$PLASTER_PARAM_ModuleAuthor | $PLASTER_PARAM_ModuleAuthorEmail'
+        description='$PLASTER_PARAM_ModuleDesc'/>
+    <file source='ClassBasedPowerShell_DSCFiles\dscClassBased.psm1' destination='$PLASTER_PARAM_ModuleName.psm1'/>
+    <!-- General ReadMe file -->
+    <templateFile condition='$PLASTER_PARAM_Options -contains "platyPS"' destination='${PLASTER_PARAM_ModuleName}.ReadMe.md' source='docs\ReadMe.md' />
+    <templateFile condition='$PLASTER_PARAM_Options -notcontains "platyPS"' destination='${PLASTER_PARAM_ModuleName}.ReadMe.txt' source='docs\ReadMe.txt' />
+    <!-- Run over the Options parameter and setup accordingly -->
+      <!-- Invoke-Build -->
+    <message condition='$PLASTER_PARAM_Options -contains "Invoke-Build"'>Setting up Invoke-Build the build engine.</message>
+    <file condition='$PLASTER_PARAM_Options -contains "Invoke-Build"' destination='Builds\' source='InvokeBuild_Builds\build*.ps1' />
+    <requireModule name="InvokeBuild" condition='$PLASTER_PARAM_Options -contains "Invoke-Build"' message="Without Invoke-Build, you will not be able to run build scripts. Fix = install-module -name InvokeBuild."/>
+      <!-- Pester -->
+    <message condition='$PLASTER_PARAM_Options -contains "Pester"'>Setting up Pester the test engine.</message>
+    <file condition='$PLASTER_PARAM_Options -contains "Pester"' destination='Tests\' source='Pester_Tests\*.pester.*' />
+    <requireModule name="Pester" condition='$PLASTER_PARAM_Options -contains "Pester"' message="Without Pester, you will not be able to run tests on your code. Fix = install-module -name Pester."/>
+      <!-- VS Code config -->
+    <message condition="$PLASTER_PARAM_VSCode -eq 'Yes'">Configuring VS Code to your liking.</message>
+    <message condition="$PLASTER_PARAM_VSCode -eq 'YES'">Snippets in VS Code at the workspace level requires the `"Project Snippets`" extension. Make sure to install the recommended extensions, as prompted.</message>
+    <file condition='$PLASTER_PARAM_VSCode -eq "Yes"' destination='PSScriptAnalyzer\ScriptAnalyzerSettings.psd1' source='PSScriptAnalyzer\ScriptAnalyzerSettings.psd1' />
+    <file condition='$PLASTER_PARAM_VSCode -eq "Yes"' destination='.vscode\settings.json' source='editor\VSCode\settings.json' />
+    <file condition='$PLASTER_PARAM_VSCode -eq "Yes"' destination='.vscode\snippets\powershell.json' source='editor\VSCode\snippets\powershell.json' />
+    <file condition='$PLASTER_PARAM_VSCode -eq "Yes"' destination='.vscode\extensions.json' source='editor\VSCode\extensions\extensions.json' />
+    <requireModule name="PSScriptAnalyzer" condition='$PLASTER_PARAM_Options -contains "PSScriptAnalyzer"' message="Without PSScriptAnalyzer, you will not be able to have your code properly quality analyzed. Fix = install-module -name PSScriptAnalyzer."/>
+      <!-- Documentation (platyPS or not) -->
+    <message condition='$PLASTER_PARAM_Options -contains "platyPS"'>Preparing documentation files based on your choices.</message>
+    <templateFile condition='$PLASTER_PARAM_Options -contains "platyPS"' destination='docs\en-US\about_RENAME_ME_KEEP_PREFIX_AND_EXTENSION.help.md' source='docs\en-US\about_Module.help.md' />
+    <templateFile condition='$PLASTER_PARAM_Options -notcontains "platyPS"' destination='docs\en-US\about_RENAME_ME_KEEP_PREFIX_AND_EXTENSION.help.help.txt' source='docs\en-US\about_Module.help.txt' />
+    <requireModule name="platyPS" condition='$PLASTER_PARAM_Options -contains "platyPS"' message="Without platyPS, you will not be able to easily generate documentation for your project. Fix = install-module -name platyPS."/>
+    <!-- Git -->
+    <message>Preparing Git as the SCM for your project (Of course you will be using Git, so it is not possible to exclude it).</message>
+    <file destination='.gitignore' source='git_SCM\_gitignore' />
+    <file destination='.git\hooks\pre-commit' source='git_SCM\git_pre-commit' />  
+  </content>
+</plasterManifest>

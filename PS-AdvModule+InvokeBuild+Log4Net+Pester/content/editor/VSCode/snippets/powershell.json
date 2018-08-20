@@ -311,8 +311,8 @@
 		"prefix": "pesterTestUsingPesterTestsSettingsModule",
 		"body":[
 			"# Define variables",
-			"\\$moduleName = \\$(\\$Settings.moduleName)",
-			"\\$moduleRoot = \\$(\\$Settings.moduleRoot)",
+			"\\$ModuleName = \\$(\\$Settings.moduleName)",
+			"\\$ModuleRoot = \\$(\\$Settings.moduleRoot)",
 			"\r",
 			"# Tests",
 			"Describe \"TEST_NAME\" {",

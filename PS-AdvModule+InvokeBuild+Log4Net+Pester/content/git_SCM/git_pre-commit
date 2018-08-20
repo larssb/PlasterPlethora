@@ -1,5 +1,5 @@
 #!/bin/sh
 # pre-commit hook to execute Pester
-powershell -noprofile -executionpolicy Unrestricted -Command "Write-Output "Invoking Pester"; Invoke-Pester -Script ./Tests/psSyntaxAndImportValidation.pester.tests.ps1 -EnableExit;"
+pwsh-preview -noprofile -executionpolicy Unrestricted -Command "Write-Output "Invoking Pester"; Import-Module -Name ./Tests/Pester.Tests.Settings.psm1; Invoke-Pester -Script ./Tests/GeneralValidations/SyntaxValidation.Tests.ps1 -EnableExit;"
 # Exit to throw the exit code to the git hook
 exit
