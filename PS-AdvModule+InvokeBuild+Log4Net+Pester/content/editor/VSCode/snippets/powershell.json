@@ -251,7 +251,7 @@
 			"}",
 			"End {",
 			"\t# Return the gathered stats to caller.",
-			"\t\\$StatsCollection",
+			"\t,\\$StatsCollection",
 			"}"
 		],
 		"prefix": "implicit-function"
