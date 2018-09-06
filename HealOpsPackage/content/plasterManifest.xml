@@ -4,7 +4,7 @@
   <metadata>
     <name>HealOpsPackage</name>
     <id>f94a4744-65a4-4647-85be-b99fab48aa49</id>
-    <version>0.0.1</version>
+    <version>1.0.0</version>
     <title>HealOps Package</title>
     <description>Scaffolds a HealOps package. With the folder structure and anything needed to quickly get going when programming *.Tests.ps1 and *.Repairs.ps1 files and the
     other related content required to build a HealOps package.</description>
@@ -24,6 +24,7 @@
     <message>Creating folders for the HealOps package: $PLASTER_PARAM_HealOpsPackageName.</message>
     <file destination="Config\" source='' />
     <file destination="TestsAndRepairs\" source='' />
+    <file destination="Stats\" source='' />
     <!-- Copy files to intended destinations -->
     <message>Copying files for the HealOps package: $PLASTER_PARAM_HealOpsPackageName.</message>    
     <file
@@ -38,6 +39,9 @@
     <file
       source="TestsAndRepairs_Templates\Repairs.ps1"
       destination="TestsAndRepairs\RenameThis.Repairs.ps1" />
+    <file
+      source="Stats\Stats_Template.ps1"
+      destination="Stats\RenameThis.Stats.ps1" />
     <!-- Create a PowerShell module manifest -->
     <newModuleManifest
       destination='$PLASTER_PARAM_HealOpsPackageName.HealOpsPackage.psd1'

@@ -68,7 +68,3 @@ PS-AdvModule+Pester > The root folder
     ├───Pester_Tests
     └───PSScriptAnalyzer
 ```
-
-## Various
-
-Thank you for reading along and I hope you will enjoy the project.
