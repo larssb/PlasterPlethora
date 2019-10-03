@@ -1,0 +1,1 @@
+# Variable definitions for the <%=$PLASTER_PARAM_ModuleName%> Terraform module

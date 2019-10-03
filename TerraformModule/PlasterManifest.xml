@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<plasterManifest
+  schemaVersion="1.1"
+  templateType="Item" xmlns="http://www.microsoft.com/schemas/PowerShell/Plaster/v1">
+  <metadata>
+    <name>TerraformModule</name>
+    <id>4694c7c8-e368-4cb1-834c-3fb45140ffda</id>
+    <version>1.0.0</version>
+    <title>TerraformModule</title>
+    <description>For scaffolding Terraform modules</description>
+    <author>lsb</author>
+    <tags>terraform,module,iac</tags>
+  </metadata>
+  <parameters></parameters>
+  <content>
+    <file
+      source="main.tf"
+      destination="main.tf" />
+    <file
+      source="outputs.tf"
+      destination="outputs.tf" />
+    <file
+      source="variables.tf"
+      destination="variables.tf" />
+    <file
+      source="config\values.yaml"
+      destination="config\values.yaml" />
+  </content>
+</plasterManifest>
