@@ -34,8 +34,7 @@
     <!-- Folder structure -->
     <parameter name="Folders" type="multichoice" prompt="Please select folders to include" default='0,1'>
       <choice label="&amp;Public" help="Adds a public folder to module root" value="Public" />
-      <choice label="&amp;R (pRivate)" help="Adds a private folder to module root" value="Private" />
-      <choice label="&amp;Classes" help="Adds a classes folder to module root" value="Classes" />
+      <choice label="&amp;R > Private" help="Adds a private folder to module root" value="Private" />
       <choice label="&amp;Binaries" help="Adds a binaries folder to module root" value="Binaries" />
       <choice label="&amp;Data" help="Adds a data folder to module root" value="Data" />
     </parameter>
