@@ -51,8 +51,7 @@
     <file condition='$PLASTER_PARAM_Options -notcontains "Logging"' destination="$(${PLASTER_PARAM_ModuleName} -replace ' ').psm1" source='template.psm1' />
     <templateFile condition='$PLASTER_PARAM_Options -contains "Logging"' destination="$(${PLASTER_PARAM_ModuleName} -replace ' ').psm1" source='template_withLogging.psm1' />
     <!-- General ReadMe file -->
-    <templateFile condition='$PLASTER_PARAM_Options -contains "platyPS"' destination="ReadMe.md" source='docs\ReadMe.md' />
-    <templateFile condition='$PLASTER_PARAM_Options -notcontains "platyPS"' destination="ReadMe.txt" source='docs\ReadMe.txt' />
+    <templateFile destination="ReadMe.md" source='docs\ReadMe.md' />
     <!-- Create folders relative to the users selections (the folders defined under <parameters> -->
     <message>Creating your folders for module: $PLASTER_PARAM_ModuleName.</message>
     <file condition='$PLASTER_PARAM_Folders -contains "Public"' destination='Public\' source='' />
